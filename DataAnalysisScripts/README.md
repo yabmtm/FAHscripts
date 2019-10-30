@@ -6,7 +6,7 @@ scripts are meant to be modular and have classes and objects added to them for a
 
 ## analysis\_featurizer.py
 
-analysis\_featurizer.py is the base scripts for this whole project. It contains all the classes needed for analyzing data.
+`analysis_featurizer.py` is the base scripts for this whole project. It contains all the classes needed for analyzing data.
 
 ### Featurizer Class
 
