@@ -19,9 +19,17 @@ scripts are meant to be modular and have classes and objects added to them for a
 
 ### Featurizer Class
 
-The Featurizer class is the parent class of all classes in the script. You supply it a project number, run number, clone number, and gen number so it can analyze data. It will automatically retrieve all necessary files needed for analyzing the project. It will automatically remove periodic boundary conditions from the traj\_comp.xtc file and load in a trajectory with that and a compatible gro file found in the projects directory of vav3.
+The Featurizer class is the parent class of all classes in the script. You supply it a project number, run number, clone number, and gen number so it can analyze data. It will automatically retrieve all necessary files needed for analyzing the project. It will automatically remove periodic boundary conditions from the `traj_comp.xtc` file and load in a trajectory with that and a compatible gro file found in the projects directory of `vav3`.
 
-You will usually not be using the Featurizer class though. The children of this class are what is used for tailoring what type of data you want calculated. For this class to work, there will need to be a features folder in the projects directory for the project you want to be analyzed. This folder must contain an xtc.ndx file created by the gromacs make\_ndx command for selecting the index group. There also needs to be a text file called index which just needs two numbers on separate lines that selects the atom groups when the class runs the gromacs trjconv command. There also needs to be a gro file in the projects directory with solvent removed so it will be compatible with the xtc file.
+You will usually not be using the Featurizer class though. The children of this class are what is used for tailoring what type of data you want calculated. There will need to be a `features/` folder in the project setup directory for the project you want to be analyzed.  Each derived Featurizer class (children of `Featurizer()`) will have 
+
+
+```
+projects/p14xxx/
+    features/
+         xtc.ndx
+```
+This folder must contain an xtc.ndx file created by the gromacs make\_ndx command for selecting the index group. There also needs to be a text file called index which just needs two numbers on separate lines that selects the atom groups when the class runs the gromacs trjconv command. There also needs to be a gro file in the projects directory with solvent removed so it will be compatible with the xtc file.
 
 #### DistanceCalculator Class
 
