@@ -1,7 +1,7 @@
 
 # Data Analysis for Folding@Home, Written by Samir Singh
 
-This project contains several scripts that are used for analyzing data on the Folding@Home server and for now caters specifically to VAV3. These  
+This project contains several scripts that are used for analyzing data on the Folding@Home server and for now caters specifically to `vav3`. These  
 scripts are meant to be modular and have classes and objects added to them for any further analysis that is needed.
 
 ## analysis\_featurizer.py
