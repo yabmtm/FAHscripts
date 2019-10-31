@@ -120,7 +120,7 @@ def load_npy_file(feat):
 
 
 def create_feat_dir(feat):
-    """ Creates a features directory in the data directory of the given Featurizer object """
+	""" Creates a features directory in the data directory of the given Featurizer object """
 
     os.mkdir(os.path.join(base_dir, 'PROJ' + str(feat.proj_num), 'features'))
 
@@ -212,7 +212,7 @@ def rm_periodic_boundary_cond(feat):
 
 class Featurizer:
     """
-    This is a class for calculating features for a frame of data.
+    This is the base class for calculating features for a frame of data.
     
     Attributes:
 	proj_num: The project number
@@ -229,17 +229,18 @@ class Featurizer:
     """
 
     def __init__(self, proj_num, run_num, clone_num, gen_num, filename=None):
-	""" Constructor for Featurizer class """
+        """ Constructor for Featurizer class """
 
-	self.proj_num = proj_num
+        self.proj_num = proj_num
         self.run_num = run_num
         self.clone_num = clone_num
         self.gen_num = gen_num
         self.xtc_file = rm_periodic_boundary_cond(self)
         self.gro_file = find_gro(self)
         self.traj = md.load(self.xtc_file, top=self.gro_file)
-	self.data_path = os.path.join(base_dir, 'PROJ' + str(self.proj_num), 'features', filename)
-	os.system('rm /home/server/git/fah-scripts/DataAnalysisScripts/temp_xtc/*.xtc')
+
+        self.data_path = os.path.join(base_dir, 'PROJ' + str(self.proj_num), 'features', filename)
+        os.system('rm /home/server/git/fah-scripts/DataAnalysisScripts/temp_xtc/*.xtc')
 
 
 class DistanceCalculator(Featurizer):
@@ -262,11 +263,12 @@ class DistanceCalculator(Featurizer):
     """
 
     def __init__(self, proj_num, run_num, clone_num, gen_num, filename='distances.npy'):
-	""" Constructor for the DistanceCalculator class """
-	Featurizer.__init__(self, proj_num, run_num, clone_num, gen_num, filename)
-	self.features_file = os.path.join(gro_dir, 'p' + str(proj_num), 'features', 'features.npy')
-	if not os.path.isfile(self.data_path):
-	   create_npy_file(self) 
+        """ Constructor for the DistanceCalculator class """
+
+        Featurizer.__init__(self, proj_num, run_num, clone_num, gen_num, filename)
+        self.features_file = os.path.join(gro_dir, 'p' + str(proj_num), 'features', 'features.npy')
+        if not os.path.isfile(self.data_path):
+           create_npy_file(self)
 
     def get_distance_indices(self, atom_desc=None):
         """ 
