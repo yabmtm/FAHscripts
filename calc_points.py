@@ -143,18 +143,13 @@ print("deadline:", deadline)
 print("timeout:", timeout)
 
 # Prompt to generate project.xml based on project summary, and write if yes
-desc_input = ""
-while desc_input != 'y' and desc_input != 'n':
-    desc_input = raw_input("\nWould you like to generate a project.xml based on the parameters above? (y/n): ")
-    if desc_input == 'y':
-        description = raw_input("\nPlease enter a description for your project (The ID is already included): ")
-        fout = open('project.xml', 'w')
-        if project_type == 'gromacs': # re-add frame*.trr under the <return> flag
-            fout.write("""<project type="GRO_A7" id="%s">
+
+fout = open('project.xml', 'w')
+if project_type == 'gromacs': # re-add frame*.trr under the <return> flag
+    fout.write("""<project type="GRO_A7" id="%s">
   <min-core-version v="0.0.17"/>
 
   <!-- project settings -->
-  <project-key v="%s"/>
   <runs v="10"/>
   <clones v="100"/>
   <gens v="100"/>
@@ -169,9 +164,7 @@ while desc_input != 'y' and desc_input != 'n':
   <timeout v="%f"/>
   <deadline v="%f"/>
 
-  <description v="%s %s"/>
   <contact v="voelz@temple.edu"/>
-
   <accept-mode v="assign"/>
 
   <send>
@@ -196,9 +189,9 @@ while desc_input != 'y' and desc_input != 'n':
   <next-gen-command>
     /usr/local/bin/gromacs-5.0.4/bin/convert-tpr -s $jobdir/frame0.tpr -f $results/frame$prev-gen.trr -o $jobdir/frame$gen.tpr -extend %d
   </next-gen-command>
-</project>""" % (proj_id, proj_id, atoms, simulation_time, points, timeout, deadline, proj_id, description, structure, mdp, topology, index_, simulation_time*1000))
+</project>""" % (proj_id, proj_id, atoms, simulation_time, points, timeout, deadline, proj_id, structure, mdp, topology, index_, simulation_time*1000))
 
-        if project_type == 'openmm':
+if project_type == 'openmm':
             fout.write("""<project type="OPENMM_21" id="1170x">
   <gpu/>
   <min-core-version v="0.0.18"/>
