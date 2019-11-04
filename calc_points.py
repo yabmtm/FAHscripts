@@ -168,13 +168,11 @@ while desc_input != 'y' and desc_input != 'n':
   <stats_credit v="%d"/>
   <timeout v="%f"/>
   <deadline v="%f"/>
-  <k-factor v="0.75"/>
-  <give-credit-bonus v="true"/> <!-- is this needed? -->
 
   <description v="%s %s"/>
   <contact v="voelz@temple.edu"/>
 
-  <accept-mode v="assign"/> <!-- is this needed? -->
+  <accept-mode v="assign"/>
 
   <send>
     frame$gen.tpr
