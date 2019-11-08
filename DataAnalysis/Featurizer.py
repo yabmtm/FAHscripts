@@ -83,37 +83,15 @@ class Featurizer:
 		self.ngens = None
 		self.ns_per_gen = None
 		self.ns_per_frame = None
-		self.gmx_index_filenames = []  # needed to process the pbc conversion for each run
 		self.gmx_index_groups = []     # needed to process the pbc conversion for each run
+		self.gmx_index_filenames = []  # needed to process the pbc conversion for each run
+
 		# fill the these attributes using information from the config.dat file
 		self.read_config(self.config_filename)
 
-### Get config information
 
 
-"""Example features/config.dat file:
-        
-        # Configuration file for featurization
 
-        nruns    8
-        nclones  1500
-        maxgens  400
-        
-        ns_per_gen     2.50
-        ns_per_frame   0.1
-        
-        # For pbc removal
-        ### Note the index group and filename must be supplied for each run
-        pbc_index_info
-        28 /home/server/server2/projects/p14188/RUN0/index.ndx 
-        28 /home/server/server2/projects/p14188/RUN1/index.ndx
-        28 /home/server/server2/projects/p14188/RUN2/index.ndx
-        28 /home/server/server2/projects/p14188/RUN3/index.ndx
-        28 /home/server/server2/projects/p14188/RUN4/index.ndx
-        28 /home/server/server2/projects/p14188/RUN5/index.ndx
-        28 /home/server/server2/projects/p14188/RUN6/index.ndx
-        28 /home/server/server2/projects/p14188/RUN7/index.ndx
-        """
 
         # create some temp storage for the gro file, and run,
         # so we don't do extra work finding these it and loading it in each time featurize() is called
@@ -130,8 +108,72 @@ class Featurizer:
 		os.system('rm /home/server/git/fah-scripts/DataAnalysisScripts/temp_xtc/*.xtc')
 
     def read_config(self, config_filename):
-        """Read in the configuration file, and return a dictionary"""
-		pass
+        """Read in the configuration file, and return a dictionary.
+
+        Example features/config.dat file:
+
+        # Configuration file for featurization
+
+        nruns    8
+        nclones  1500
+        ngens  400
+
+        ns_per_gen     2.50
+        ns_per_frame   0.1
+
+        # For pbc removal
+        ### Note the index group and filename must be supplied for each run
+        pbc_index_info
+        28 /home/server/server2/projects/p14188/RUN0/index.ndx
+        28 /home/server/server2/projects/p14188/RUN1/index.ndx
+        28 /home/server/server2/projects/p14188/RUN2/index.ndx
+        28 /home/server/server2/projects/p14188/RUN3/index.ndx
+        28 /home/server/server2/projects/p14188/RUN4/index.ndx
+        28 /home/server/server2/projects/p14188/RUN5/index.ndx
+        28 /home/server/server2/projects/p14188/RUN6/index.ndx
+        28 /home/server/server2/projects/p14188/RUN7/index.ndx
+        """
+
+		self.nruns = None
+		self.nclones = None
+		self.ngens = None
+		self.ns_per_gen = None
+		self.ns_per_frame = None
+		self.gmx_index_filenames = []  # needed to process the pbc conversion for each run
+		self.gmx_index_groups = []     # needed t
+
+		fin = open(config_filename, 'r')
+		lines = fin.readlines()
+		fin.close()
+
+		while len(lines) > 0:
+			fields = lines[0].strip().split()
+			if len(fields) == 0:
+				lines.pop(0)
+			else:
+				if fields[0][0] == '#':
+					lines.pop(0)
+				elif fields[0] == 'nruns':
+					self.nruns = int(fields[1])
+					lines.pop(0)
+				elif fields[0] == 'nclones':
+					self.nclones = int(fields[1])
+					lines.pop(0)
+				elif fields[0] == 'ngens':
+					self.ngens = int(fields[1])
+					lines.pop(0)
+				elif fields[0] == 'ns_per_gen':
+					self.ns_per_gen = float(fields[1])
+					lines.pop(0)
+				elif fields[0] == 'ns_per_frame':
+					self.ns_per_frame = int(fields[1])
+					lines.pop(0)
+				elif fields[0] == 'pbc_index_info':
+					for i in range(self.nruns):
+						s = lines.pop(0).split()
+						self.gmx_index_groups.append(int(s[0]))
+						self.gmx_index_filenames.append(s[1])
+					lines.pop(0)
 
 	def create_dataframe(self):
 		"""Create an empty DataFrame for this project."""
