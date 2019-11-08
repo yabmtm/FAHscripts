@@ -29,7 +29,7 @@ gro_dir = '/home/server/server2/projects/Gromacs/'
 
 class Featurizer:
 	"""
-	This is the base class for calculating features for a frame of data.
+	This is the base class for calculating features for a frame of data.   
 	
 	A Featurizer() is an object for featurizing trajectory data for a given FAH project.
 	It knows the the 
