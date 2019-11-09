@@ -213,7 +213,7 @@ class Featurizer:
         xtc = self.rm_periodic_boundary_cond(xtc_filename)
 
         ### DO THE FEATURIZATION HERE ###
-
+        pass
 
         # Close the HDF5 handle to the DataFrame
         self.store.close()
