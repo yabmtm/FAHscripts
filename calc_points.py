@@ -187,7 +187,7 @@ if project_type == 'gromacs': # re-add frame*.trr under the <return> flag
   </create-command>
 
   <next-gen-command>
-    /usr/local/bin/gromacs-5.0.4/bin/convert-tpr -s $jobdir/frame0.tpr -f $results/frame$prev-gen.trr -o $jobdir/frame$gen.tpr -extend %d
+    /usr/local/bin/gromacs-5.0.4/bin/convert-tpr -s $jobdir/frame$prev-gen.tpr -f $results/frame$prev-gen.trr -o $jobdir/frame$gen.tpr -extend %d
   </next-gen-command>
 </project>""" % (proj_id, proj_id, atoms, simulation_time, points, timeout, deadline, proj_id, structure, mdp, topology, index_, simulation_time*1000))
 
