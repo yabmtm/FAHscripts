@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>vav3.ocis.temple.edu</title>
+	<link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <meta name="viewport" content="width=device-width">
+</head>
+<body style="background-color:#DFDFDF;">
+	<header>
+		<nav>
+			<ul id="main-menu"><!-- ul for the top menu items -->
+                                <li><a href="dashboard.html">Dashboard</a></li>
+				<li><a href="">Gromacs Projects</a>
+					<div class="fw-dropdown"><!-- start of mega menu dropdown that appears on hover, fw = full width -->
+						<ul>
+							<li><a href="data/Gromacs/p14101/index.html">p14101</a>
+							<li><a href="data/Gromacs/p14102/index.html">p14102</a>
+							<li><a href="data/Gromacs/p14103/index.html">p14103</a>
+							<li><a href="data/Gromacs/p14104/index.html">p14104</a>
+							<li><a href="data/Gromacs/p14105/index.html">p14105</a>
+						</ul>
+						<ul>
+							<li><a href="data/Gromacs/p14106/index.html">p14106</a>
+							<li><a href="data/Gromacs/p14175/index.html">p14175</a>
+							<li><a href="data/Gromacs/p14182/index.html">p14182</a>
+							<li><a href="data/Gromacs/p14183/index.html">p14183</a>
+							<li><a href="data/Gromacs/p14188/index.html">p14188</a>
+						</ul>
+						<ul>
+							<li><a href="data/Gromacs/p14189/index.html">p14189</a>
+							<li><a href="data/Gromacs/p14190/index.html">p14190</a>
+							<li><a href="data/Gromacs/p14197/index.html">p14197</a>
+							<li><a href="data/Gromacs/p14198/index.html">p14198</a>
+							<li><a href="data/Gromacs/p14199/index.html">p14199</a>
+						</ul>
+						<ul>
+							<li><a href="data/Gromacs/p14303/index.html">p14303</a>
+							<li><a href="data/Gromacs/p14304/index.html">p14304</a>
+							<li><a href="data/Gromacs/p14305/index.html">p14305</a>
+							<li><a href="data/Gromacs/p14306/index.html">p14306</a>
+							<li><a href="data/Gromacs/p14307/index.html">p14307</a>
+						</ul>
+						<ul>
+							<li><a href="data/Gromacs/p14308/index.html">p14308</a>
+						</ul>
+
+					</div><!-- end of the mega menu dropdown that appears on hover -->
+				</li>
+				<li><a href="">OpenMM Projects</a>
+					<div class="fw-dropdown">
+						<ul class="dropdown-column-list"><!-- start of mega menu dropdown that appears on hover -->
+						<ul>
+							<li><a href="data/OpenMM/p14196/p14196.html">p14196</a>
+						</ul>
+
+					</div><!-- end of mega menu dropdown that appears on hover -->
+				</li>
+				<li><a href="index.html">Logout</a></li>
+			</ul>
+		</nav>
+	</header>
+
+<!DOCTYPE html>
+<html>
+   <head><title>WS Status</title>
+   <meta http-equiv="refresh" content="60">
+   <style type="text/css">
+table.gridtable {
+	font-family: verdana,arial,sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+}
+table.gridtable th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #dedede;
+}
+table.gridtable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+}
+tr.redrow {
+   color: red;
+}
+tr.orangerow {
+   color: orange;
+}
+</style>
+   </head>
+   <body>
+<h1 style='padding-top:8.5em'>Dashboard</h1>
+<p>Generated on Sun, 01 Dec 2019 23:24:01 -0500.</p>
+<p>Hostname vav3.ocis.temple.edu</p>
+<div style="width: 100%; display: table;">
+    <div style="display: table-row">
+<div style="display: table-cell; left-margin:24px;">
+<ul>
+<li>Ping status: <span style="color:green"> Ok </span></li>
+<li>Time: 11:24:01 PM</li>
+<li>Uptime: 11days, </li>
+<li>CPU Load average (1m, 5m, 15m): <span style="color:green"> 0.39, 0.34, 0.28 (max: 24)</span> </li>
+<li>Number of cores: 24</li>
+<li>Total running processes: 507 </li>
+<li style='padding-top:1em'>Memory status:
+<table class="gridtable"><thead><tr><th>Type</th><th>Used</th><th>Free</th><th>Total</th></tr></thead>
+<tbody><tr><td>RAM</td><td>1994 MB</td><td><span style="color:green">22024 MB</span></td><td>24019 MB</td></tr>
+       <tr><td>SWAP</td><td>78 MB</td><td><span style="color:green">1961 MB</span></td><td>2039 MB</td></tr></tbody></table>
+</li>
+<li style='padding-top:1em'>Disk status:
+<table class="gridtable"><thead><tr><th>Mount point</th><th>Percent used</th><th>File System</th><th>Used/Total</th></tr></thead>
+<tbody>
+<tr><td>/</td><td>13%<td>ext3</td><td>56G/456G</td></tr>
+<tr class="orangerow"><td>/boot</td><td>81%<td>ext3</td><td>76M/99M</td></tr>
+<tr><td>/array1</td><td>73%<td>ext4</td><td>9.9T/15T</td></tr>
+<tr><td>/array0</td><td>40%<td>ext4</td><td>5.4T/15T</td></tr>
+</tbody></table>
+</li>
+</ul>
+</div>
+    </div>
+</div>
+<p>This information is updated every minute</p>
+</body></html>
+
+<div class="container" style="position:fixed; top:34%; left:27%;">
+
+  <section class="container__snippet snippet--regex">
+    <p style="color:#FFFFFF">LOG</p>
+    <pre>
+      <code style="color:#FFFFFF">
+        <!-- snippet  -->
+      </code>
+    </pre>
+  </section>
+
+</div>
+
+<script src="js/log.js"></script>
+
+</body>
+</html>

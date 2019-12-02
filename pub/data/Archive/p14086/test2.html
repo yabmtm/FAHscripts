@@ -1,0 +1,48 @@
+<html>
+  <head>
+
+    <style>
+      .error {
+      width: 200px;
+      background-color: red;
+      color: white;
+      }
+    </style>
+
+    <script src="../../node_modules/ngl/dist/ngl.js"></script>
+    <script type="text/javascript">
+
+      function myFunction() {
+        var state = document.getElementById('value').value;
+        var x = document.getElementById("viewport");
+//        x.style.display = "none";
+
+        var stage;
+        document.addEventListener("DOMContentLoaded", function () {
+          stage = new NGL.Stage("viewport");
+          stage.loadFile("tica/states/state_1.pdb", {defaultRepresentation: true});
+        });
+        document.getElementById('viewport').reload(true)
+//        await sleep(2000);
+//        x.style.display = "block";
+      }
+
+    </script>
+  </head>
+
+  <body>
+<input type="text" maxlength="3" name="value" id='value' />
+<input type="button" value="submit" onclick="myFunction()" />
+
+  <script src="../../node_modules/ngl/dist/ngl.js"></script>
+  <script>
+    var stage;
+    document.addEventListener("DOMContentLoaded", function () {
+      stage = new NGL.Stage("viewport");
+      stage.loadFile("p14086.gro", {defaultRepresentation: true});
+    });
+  </script>
+  <div id="viewport" style="position:relative; width:400px; height:400px; border: 3px green; float:right; margin-right:100px;"></div>
+  </body>
+
+</html>

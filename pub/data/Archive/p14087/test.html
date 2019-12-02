@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>NGL - embedded</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+</head>
+<body>
+  <script src="../../node_modules/ngl/dist/ngl.js"></script>
+  <script>
+    var stage;
+    document.addEventListener("DOMContentLoaded", function () {
+      stage = new NGL.Stage("viewport");
+      stage.loadFile("p14087.gro", {defaultRepresentation: true});
+    });
+  </script>
+  <div id="viewport" style="width:800px; height:800px;"></div>
+</body>
+</html>
