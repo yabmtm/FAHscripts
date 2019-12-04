@@ -44,7 +44,7 @@ for i in range(omm_cols):
 active_projects = ''.join(['      <a href="#">%s</a>\n'%re.sub('.*projects/','',i) for i in active_projects])
 dashboard = subprocess.check_output('/home/server/server2/pub/stats.sh', shell=True)
 hostname = subprocess.check_output('hostname', shell=True).strip('\n')
-log = subprocess.check_output('tail -n 500 /home/server/server2/fah-work.log| sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"', shell=True)
+log = subprocess.check_output('tail -n 500 /home/server/server2/fah-work.log| sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"| sed "s/@.*$/@CLIENT_IP/"', shell=True)
 
 with open('/home/server/server2/pub/dashboard.html', 'w') as f:
     f.write("""<!DOCTYPE html>
@@ -77,7 +77,7 @@ with open('/home/server/server2/pub/dashboard.html', 'w') as f:
 		</nav>
 	</header>
 %s
-<div class="container" style="position:fixed; top:34%%; left:27%%;">
+<div id="container" class="container" style="position:fixed; top:34%%; left:27%%;">
 
   <section class="container__snippet snippet--regex">
     <p style="color:#FFFFFF">LOG</p>
@@ -120,15 +120,15 @@ const snippetRegex = document.querySelector(".snippet--regex pre code");
 // include them in an array of object, each detailing the expression and the class which needs to be applied upon the strings matching the connecting expression
 const regularExpressions = [
         { 
-          expression: /([0-9]+:[0-9]+:[0-9]+:..:|(REQ|OUT)[0-9]+:|^............#[0-9]+:)/gi,
+          expression: /([0-9]+:[0-9]+:[0-9]+:..:|(REQ|OUT|CON)[0-9]+:|^............#[0-9]+:)/g,
           class: "timestamps"
         },
         { 
-          expression: /([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+:[0-9]+.+|Connecting to|Client: '.+[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+'|(to |from ).+@.+|assign.+foldingathome.+|POST.+)/g,
+          expression: /([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+:[0-9]+.+|Connecting to|Client: '.+[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+'|(to |from ).+@.+|assign.+foldingathome.+|POST.+|Sending relay.+|Client: .+@.+)/g,
           class: "ip_addrs"
         },
 	{
-          expression: /Executing.+/gi,
+          expression: /Executing.+|gmx.+\.\..+/gi,
           class: "command"
 	},
         { 
@@ -136,15 +136,15 @@ const regularExpressions = [
           class: "projects"
         },
 	{
-	  expression: /Request.WORK_REQUEST|Request.WORK_RESULTS|WORK_REQUEST|WORK_RESULTS|WORK_ASSIGNMENT|WORK_ACK|Response|accepted|assigned|Updating.AS|KEY_ACCEPTED|Retrying f..... job/gi,
+	  expression: /Request.WORK_REQUEST|Request.WORK_RESULTS|WORK_REQUEST|WORK_RESULTS|WORK_ASSIGNMENT|WORK_ACK|Response|accepted|assigned|Updating.AS|KEY_ACCEPTED|Retrying f..... job|Extending.+/g,
 	  class: "good_response"
 	},
 	{
-	  expression: /Request WORK_FAILED|WORK_FAILED|WORK_FAULTY|Client reported Failed Assignment|#[0-9]+|Request WORK_FAULTY|Core.+Assignment|gcq#.+/gi,
+	  expression: /Request WORK_FAILED|WORK_FAILED|WORK_FAULTY|Client reported Failed Assignment|#[0-9]+|Request WORK_FAULTY|Core.+Assignment|gcq#.+|std::exception.+|Exception.+|Failed.+|TOKEN_INVALID|Not retrying failed job|[0-9]+.previous.retries.and.p.+/g,
 		class: "bad_response"
 	},
 	{
-	  expression: /(Empty WU.+|Retrying failed job|.[0-9]+ previous retries\)|Secure.+|Registering.+CS.at|PLEASE_WAIT)/gi,
+	  expression: /(Empty WU.+|Retrying failed job|.[0-9]+ previous retries\)|Secure.+|Registering.+CS.at|PLEASE_WAIT|timedout.+|WORK_QUIT|Cleaning.+DB)/g,
 		class: "neutral_response"
 	},
         {
@@ -156,4 +156,6 @@ const regularExpressions = [
 // loop through the array of regex and update the HTML structure of the snippet wrapping the strings matching the expressions in span elements, bearing a class paired to the expression itself
 // class defined in the stylesheet to alter the appearance of the matching strings
 regularExpressions.forEach((regularExpression) => snippetRegex.innerHTML = snippetRegex.innerHTML.replace(regularExpression.expression, `<span class=${regularExpression.class}>$&</span>`));
+var element = document.getElementById("container");
+element.scrollTop = element.scrollHeight;
 """%log)
