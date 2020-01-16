@@ -53,8 +53,11 @@ elif hostname == 'vav4':
     array1 = debug_prefix + '/array1/server2/data/SVR166220/' 
 elif hostname == 'vav15':
     array0 = debug_prefix + '/home/server/server2/data/SVR2616698069'
+elif hostname == 'vav16':
+    array0 = debug_prefix + '/home/server/server2/data/SVR2616698070'
 else:
     print('Hostname not recognized. Define hostname and paths in slackbot.py.')
+    sys.exit()
 
 project_config_prefix = debug_prefix + '/home/server/server2/projects/Gromacs/'
 results_prefix = debug_prefix + '/home/server/server2/.results/'
