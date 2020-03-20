@@ -1,0 +1,205 @@
+/* Reset */
+* {
+	padding: 0;
+	margin: 0;
+}
+
+body {
+  list-style: none;
+  font: 16px/1.2 'Montserrat', sans-serif;
+}
+
+header {
+	width: 100%;
+	background: #616161;
+	height: 70px;
+	display: flex;
+	align-items: center;
+}
+
+a {
+	color: #fff;
+	margin: auto;/* center the links horizontally and vertically */
+  text-decoration: none;
+}
+
+nav {
+	width: 100%;
+	height: 100%;
+}
+
+header #main-menu {
+	display: flex;
+	height: 100%;
+	justify-content: space-around;
+	align-items: center;
+	width: 100%;
+}
+
+header #main-menu li {
+	flex-basis: 15%;
+	text-align: center;
+	height: 100%;
+	display: flex;
+}
+
+/* the mega menu/div that drops down */
+.fw-dropdown {
+	position: absolute;
+	top: 70px;
+	left: 0;
+	display: none;
+	width: 100%;
+	padding: 2em 0;
+	background: #333;
+  justify-content: space-around;
+}
+
+header #main-menu .fw-dropdown li {
+	height: auto;
+	padding: 10px;
+}
+
+header #main-menu li:hover {
+	background: #303030;
+}
+
+header #main-menu li:hover a {
+	color: #f3f3f3;
+}
+
+header #main-menu li:hover .fw-dropdown {
+	display: flex;
+}
+
+header #main-menu .fw-dropdown ul {
+	flex-basis: 15%;
+}
+
+
+
+
+
+
+
+
+
+
+
+@import url("https://fonts.googleapis.com/css?family=Open+Sans|Fira+Mono");
+
+/* define with custom properties the font and colors used in the project */
+:root {
+  /* font(s) and color(s) for text */
+  --font-text: 'Open Sans', sans-serif;
+  --font-code: 'Fira Mono', monospace;
+  --color-text: #f5f0f5;
+  /* color(s) for border */
+  --color-border: #f5f0f533;
+
+  /* color(s) for background */
+  --color-background: #DFDFDF;
+  --color-background-light: #1c3b52;
+  --color-background-dark: #14232D;
+
+  /* color(s) for code snippet */
+  --color-bad_response: #E84A5F; /*#0367D6;*/
+  --color-neutral_response: #E5FCC2; /*#F75D85;*/
+  --color-projects: #FECEAB; /*#2BC506;*/
+  --color-ip_addrs: #45ADA8; /*#FBDD00;*/
+  --color-timestamps: #C06C84; /*#FA9800;*/
+  --color-good_response: #99B898; /*#56D142;*/
+  --color-command: #FFAAA6;
+  --color-server_down: #FF0000;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  width: 100%;
+  color: #000000;
+  background: #DFDFDF;
+}
+
+/* display the sections horizontally centered and on top of one another  */
+.container {
+/*  display: flex;
+  flex-direction: column; */
+  align-items: center;
+}
+
+/* separate the sections from one another */
+.container__snippet {
+  margin: 1rem 0.5rem 1.25rem;
+  /* cap the width of the section to 700px */
+  max-width: 1200px;
+  max-height: 100px;
+  width: 90vw;
+  /* drop shadow through a filter allows to include a shadow around the irregular object (unlike box-shadow) */
+  filter: drop-shadow(1px 2px 2px var(--color-background-dark));
+}
+
+/* style the paragraph to visually lie on top of the code snippet */
+/* for the paragraph and pre element include border-radius and border left to visually connect them */
+.container__snippet p {
+  /* inline block to have the paragraph occupy only the space of its text */
+  display: inline-block;
+  padding: 0.5rem 0.1rem;
+  font-size: 1.5rem;
+  background: var(--color-background-dark);
+  /* top-left, top-right, bottom-right, bottom-left */
+  border-radius: 10px 10px 0 0;
+  border-left: 5px solid var(--color-border);
+}
+
+pre {
+  padding: 1rem 1.2rem;
+  background: var(--color-background-dark);
+  border-left: 5px solid var(--color-border);
+  border-radius: 10px;
+  /* specifically targeting one corner */
+  border-top-left-radius: 0;
+  /* spread the pre element to cover inasmuch as the container, and allow for horizontal scroll */
+  width: 100%;
+  height: 500px;
+  overflow-x: auto;
+  overflow-y: scroll;
+}
+/* for the code include the chosen monospace font */
+pre code {
+  font-family: var(--font-code);
+  font-size: 0.8rem;
+  font-weight: 300
+}
+
+/* include classes applied to different sections of the code snippet */
+span.bad_response {
+  color: var(--color-bad_response);
+}
+span.neutral_response {
+  color: var(--color-neutral_response);
+}
+span.timestamps {
+  color: var(--color-timestamps);
+}
+span.projects {
+  color: var(--color-projects);
+}
+span.ip_addrs {
+  color: var(--color-ip_addrs);
+}
+span.good_response {
+  color: var(--color-good_response);
+}
+span.command {
+  color: var(--color-command);
+}
+span.server_down {
+  color: var(--color-server_down);
+}
+}

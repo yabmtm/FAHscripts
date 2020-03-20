@@ -1,0 +1,60 @@
+<html>
+  <head>
+
+    <style>
+      .error {
+      width: 200px;
+      background-color: red;
+      color: white;
+      }
+    </style>
+
+    <script type="text/javascript">
+
+      // Create variables for code input field & submit button
+      var codeInput = document.getElementById('codeField');
+      var submitBtn = document.getElementById('codeSubmit');
+
+      function hideError() {
+        // Hide error message
+        $('.error').hide();
+      }
+
+      function submitCode(code) {
+        var code = codeInput.value;
+        // Search for a match between regular expression and user input
+        var regEx = /^[0-9]+$/.test(code);
+        console.log(regEx);
+        // If code length is not 10 or regular expression doesn't match
+        if(code.length != 10 || regEx === false) {
+          console.log("Code not accepted");
+          // Show error message
+          $('.error').show();
+        } else {
+          console.log("Code accepted");
+          // Hides error message if code was previously input incorrectly
+          $('.error').hide();
+          //window.location="https://www.google.com";
+        }
+      }
+
+      $('#codeSubmit').click( function() {
+        submitCode();
+      })
+
+
+    </script>
+  </head>
+
+  <body>
+    <p class="error">Please enter a valid code</p>
+    <script type="text/javascript">
+      $('.error').hide();
+    </script>
+    <input type="text" id="codeField" />
+    <button value="submit" id="codeSubmit">Submit</button>
+    <input type="button" onclick="submitCode()" value="Display JS Array"/>
+    <ul id="list"></ul>
+  </body>
+
+</html>

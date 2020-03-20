@@ -1,22 +1,35 @@
-import glob, os, re, socket, time, io, subprocess, sys
+#!/home/server/anaconda2/bin/python
+
+import traceback, datetime, sys, io
+import glob, os, re, socket, time, subprocess
 from slackclient import SlackClient
 import numpy as np
+
+import logging #debugging
+logging.basicConfig()
 
 # Check if Slackbot is already running
 cmd = 'ps aux | grep slack | wc -l'
 output = subprocess.check_output(cmd, shell=True)
-if int(output) > 3: # Seems silly, but it's true
-    print("Slackbot is already running! Kill process and try again.")
+
+if int(output) > 4: # Seems silly, but it's true
+    cmd = "ps aux | grep python | grep slack | awk '{print $2}' | head -n 1"
+    output = subprocess.check_output(cmd, shell=True)
+    print("Slackbot is already running! Kill process %s and try again."%output)
     sys.exit(1)
 
-# instantiate Slack client
-slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
+# Instantiate Slack client
+#slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))  # use this if SLACK_BOT_TOKEN is set in env
+with open('/home/server/.slack') as f: # use these lines to import token from ~/.slack
+    SLACK_BOT_TOKEN = f.readlines()[0].strip()
+f.close()
+slack_client = SlackClient(SLACK_BOT_TOKEN)
 
 # Slackbot's user ID in Slack: value is assigned after the bot starts up
 starterbot_id = None
 
 # Constants
-RTM_READ_DELAY = 1 # 1 second delay between reading from RTM
+RTM_READ_DELAY = 0.9 # 1 second delay between reading from RTM
 MENTION_REGEX = "^<@(|[WU].+?)>(.*)"
 VERBOSE = False
 
@@ -27,12 +40,20 @@ else:
     debug_prefix = ''
 
 # User and Hostname definitions
-hostname = 'vav3'
+hostname = subprocess.check_output('hostname', shell=True).split('.')[0]
 user_list = ['tuf74040', 'rraddi', 'voelz', 'matthew.hurley']
+channels = {'dm_matt':'DDVJWFRJ5', 'fah-servers':'C9A00A4AX', 'server-status':'CHN0NE2Q2'}
 
 # Path definitions
-array0 = debug_prefix + '/array0/data/'
-array1 = debug_prefix + '/array1/server2/data/SVR166219/'
+if hostname == 'vav3':
+    array0 = debug_prefix + '/array0/data/'
+    array1 = debug_prefix + '/array1/server2/data/SVR166219/'
+elif hostname == 'vav4':
+    array0 = debug_prefix + '/array0/projectdata/'
+    array1 = debug_prefix + '/array1/server2/data/SVR166220/' 
+else:
+    print('Hostname not recognized. Define hostname and paths in slackbot.py.')
+
 project_config_prefix = debug_prefix + '/array1/server2/projects/Gromacs/'
 results_prefix = debug_prefix + '/array1/server2/.results/'
 timestr = time.strftime("%Y%m%d-%H%M%S")
@@ -113,11 +134,14 @@ def handle_command(command, channel):
                 response += '\n' + i
 
     if command.startswith('project'):
-        if command.split()[1] in project_numbers:
-            response = get_project_info(command.split()[1])
         if command.split()[1] == 'list':
             response = "\n*" + hostname + " Project List:*"
             for project_number in project_numbers:
+
+                if project_number == 'slack': # why does this even happen now? but it does D:
+                    print('it happen')
+                    pass
+
                 project_xml = project_config_prefix + 'p' + project_number + "/project.xml"
 
                 try: # parse xml for stuff
@@ -132,11 +156,37 @@ def handle_command(command, channel):
                     response += '\n' + project_number + ": " + description
                 except:
                     response += '\n' + project_number + ": No project.xml for this project."
+        else:
+            response = get_project_info(command.split()[1])
+
     if command.startswith('usage'):
-        response = get_data_usage()
+        response = get_data_usage(False)
 
     if command.startswith('change'):
         response = change_stats(command.split()[1], command.split()[2])    
+
+    if command.startswith('plot'):
+        if command.split()[1] in project_numbers:
+            try:
+                
+                response = 'Check back tomorrow for an updated plot.'
+                cmd = 'find ' + results_prefix + ' | grep ' + command.split()[1] + ' | grep png | head -n 1'
+                image_path = subprocess.check_output(cmd, shell=True).strip()               
+
+                with open(image_path, 'rb') as f:
+                    slack_client.api_call(
+                        "files.upload",
+                        channels=channel,
+                        filename='%s.png'%command.split()[1],
+                        title='Project %s -- %s'%(command.split()[1],timestr),
+                        initial_comment='Trajectory Distribution',
+                        file=f)
+
+            except:
+                response = "No plot found for project " + command.split()[1]
+
+        else:
+            response = "Invalid project number. Try \n>`@" + hostname + " project list`"
 
     if command.startswith('say'):
         cmd = 'cowsay "' + ' '.join(command.split()[1:]) + '"'
@@ -147,24 +197,16 @@ def handle_command(command, channel):
 
     if command == 'lunch':
         response = pick_my_lunch()
+
+
     # Sends the response back to the channel
     slack_client.api_call(
         "chat.postMessage",
         channel=channel,
-        text=response or default_response
-    )
+        text=response or default_response)
+    print(channel)
 
-#    else:
-#        with open('/home/matt/Pictures/wallhaven-673983.png', 'rb') as f:
-#            slack_client.api_call(
-#                "files.upload",
-#                channels=channel,
-#                filename='wallpaper.png',
-#                title='sampletitle',
-#                initial_comment='sampletext',
-#                file=f)
-            
-#### fah functions
+#### FAH functions
 
 def get_project_info(project_number):
     if project_number in project_numbers:
@@ -212,6 +254,7 @@ def get_project_info(project_number):
 
             except:
                 growth = 0            
+                pass
         
             response = "*Project: " + project_number + "*\n\tUser: " + user + "\n\tDescription: " + description
             response += "\n\tSize: " + size + "\n\tTotal Length: " + length + "ns\n\t24-Hour Growth: " + str(growth)
@@ -249,7 +292,7 @@ def get_user_info(user):
             try:
                 growths.append(float(lines[-1][1]) - float(lines[-2][1]))
 
-            except IndexError:
+            except Exception as e:
                 growths.append(0)
         
             response += "\n\n\t*" + project_numbers[i] + "*\n\tSize: " + sizes[-1] + "\n\tLength: "
@@ -275,14 +318,15 @@ def get_user_info(user):
 
 def get_data_usage():
     
-    response = "\t*%s Disk Usage:*\n" %hostname
     header = subprocess.check_output('df -h | head -n 1', shell=True).decode("utf-8")
     array0_cmd = subprocess.check_output('df -h | grep array0', shell=True)
     array1_cmd = subprocess.check_output('df -h | grep array1', shell=True)
-    
+
+    now = str(datetime.datetime.now())
+    response = "\t*%s %s Disk Usage:*\n" %(now.split()[0],hostname)
     for line in [header, array0_cmd, array1_cmd]:
         response += line + '\n'
-    
+
     return response    
     
 
@@ -403,17 +447,33 @@ def pick_my_lunch():
 
 if __name__ == "__main__":
 
-    if slack_client.rtm_connect(with_team_state=False):
-        print("Slack Bot for %s is connected and running!"%hostname)
-        # Read bot's user ID by calling Web API method `auth.test`
-        starterbot_id = slack_client.api_call("auth.test")["user_id"]
+    while True:
+        try:
+            if slack_client.rtm_connect(with_team_state=False):
+                print("Slack Bot for %s is connected and running!"%hostname)
+                # Read bot's user ID by calling Web API method `auth.test`
+                starterbot_id = slack_client.api_call("auth.test")["user_id"]
 
-        while True:
-            command, channel = parse_bot_commands(slack_client.rtm_read())
+                while True:
+                    command, channel = parse_bot_commands(slack_client.rtm_read())
 
-            if command:
-                handle_command(command, channel)
+                    if command:
+                        handle_command(command, channel)
+
+                    now = datetime.datetime.now()
+                    if str(now).split()[1][0:8] == '13:00:00':
+                        data_usage = get_data_usage()
+                        slack_client.api_call(
+                        "chat.postMessage",
+                        channel=channels['server-status'],
+                        text=data_usage)
+                    time.sleep(RTM_READ_DELAY)
+                    
+
+        except Exception as e: # restart the bot if exception is caught
+            print(e)
+            traceback.print_exc()
             time.sleep(RTM_READ_DELAY)
-
+            pass     
     else:
         print("Connection failed. See Exception Traceback Above.")
