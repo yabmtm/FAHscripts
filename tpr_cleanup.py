@@ -29,26 +29,37 @@ verbose = False
 count, sizes, project_data_dirs = 0,[],[]
 
 # Hostname definitions
-hostname = subprocess.check_output('hostname', shell=True).split('.')[0]
+hostname = (subprocess.check_output('hostname', shell=True).decode()).split('.')[0]   # need a decode here
+print('hostname', hostname)
 
 # Path definitions
 if hostname == 'vav3':
     array0 = debug_prefix + '/array0/data/'
     array1 = debug_prefix + '/array1/server2/data/SVR166219/'
+    arrays = [array1, array0]
+    results_dir = debug_prefix + '/array1/server2/.results'
 elif hostname == 'vav4':
     array0 = debug_prefix + '/array0/projectdata/'
     array1 = debug_prefix + '/array1/server2/data/SVR166220/'
+    arrays = [array1, array0]
+    results_dir = debug_prefix + '/array1/server2/.results'
+elif hostname == 'vav15':
+    array1 = debug_prefix + '/data/SVR2616698069'
+    arrays = [array1]
+    results_dir = debug_prefix + '/home/server/server2/.results'
+elif hostname == 'vav16':
+    array1 = debug_prefix + '/data/SVR2616698070'
+    arrays = [array1]
+    results_dir = debug_prefix + '/home/server/server2/.results'
 else:
     print('Hostname not recognized. Define hostname and paths in slackbot.py.')
 
 
 project_config_prefix = debug_prefix + '/array1/server2/projects/Gromacs/'
-results_prefix = debug_prefix + '/array1/server2/.results/'
 timestr = time.strftime("%Y%m%d")
-logfile=open(results_prefix + "log.txt", "a+")
+logfile=open( os.path.join(results_dir,"log.txt"), "a+")
 
-
-for array in [array1, array0]:
+for array in arrays:
     if custom_project_numbers != []:
         projects = [array + "PROJ%s"%str(i) for i in custom_project_numbers]
     else:
