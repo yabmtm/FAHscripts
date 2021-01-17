@@ -22,7 +22,9 @@ if sys.argv[1] == 'test':
 
 #### CHANGE THESE ####
 delete = delete # (True/False)
-custom_project_numbers = [] #range(14051,14055) # [14100, 14101, 14102]
+### custom_project_numbers = [14188,14189,14190,14300,14311,14362,14700,14800]
+### custom_project_numbers = range(14051,14055) # [14100, 14101, 14102]
+custom_project_numbers = [14188, 14300, 14311, 14700, 14800]
 ######################
 
 verbose = False
@@ -30,6 +32,7 @@ count, sizes, project_data_dirs = 0,[],[]
 
 # Hostname definitions
 hostname = (subprocess.check_output('hostname', shell=True).decode()).split('.')[0]   # need a decode here
+hostname = hostname.strip()
 print('hostname', hostname)
 
 # Path definitions
