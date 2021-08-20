@@ -13,9 +13,10 @@ if len(sys.argv) < 5:
         nruns         - the number of runs, i.e.  RUN0 ... RUN(nruns-1), to analyze
         outprefix     - Output files will be written  <outprefix>.run*.txt
 
-    NOTE
+    NOTES
 
-        This script should only be run python v2
+        * This script should only be run python v2.
+        * To run in the background, do this:  nohup python2 length_dist_A8_byrun.py PROJ16969 5.0 132 p16969 >& out.082021 & 
 
     EXAMPLE
 
