@@ -94,9 +94,25 @@ for i in range(len(myruns)):
     clonedirs = [ clonedirs[j] for j in Isort]
     clones = [ clones[j] for j in Isort ]
 
+    # Create a header ruler bar to fit the length of the WU
     run_label = 'RUN%d'%run
-    run_header = '%-8s | ..10|ns..|....|....|..50|ns..|....|....|....|.100|ns..|....|....|....|.150|ns..|....|....|....|.200|ns..|....|....|....|.250|ns'%run_label
-    
+    run_header  = '%-8s | '%run_label
+    nchar_limit = 120
+    tick = 1
+    while len(run_header) < nchar_limit:  
+        # put ticks every multiple of 10
+        tick_value = int(10*project_length_in_ns(args.projnum))
+        if tick_value >= 100:
+            if tick == 1:
+                run_header += '......%3d|'%(tick*tick_value)
+            else:
+                run_header += 'ns....%3d|'%(tick*tick_value)
+        else:
+            if tick == 1:
+                run_header += '.......%2d|'%(tick*tick_value)
+            else:
+                run_header += 'ns.....%2d|'%(tick*tick_value)
+        tick += 1
     print(run_header)
 
     # for each clone, count the number of results dirs
@@ -120,8 +136,11 @@ for i in range(len(myruns)):
         resultdirs3.sort()
         resultdirs += resultdirs3
 
-
-        print('CLONE %04d'%clone, '*'*(int((len(resultdirs)-1))*int(project_length_in_ns(args.projnum)/2.0)   ) )  # added -1 to account for empty results dir at end
+        empty_last_results_dir = False
+        if empty_last_results_dir:
+            print('CLONE %04d'%clone, '*'*(int((len(resultdirs)-1))  ) )  # added -1 to account for empty results dir at end
+        else:
+            print('CLONE %04d'%clone, '*'*(int((len(resultdirs)))  ) ) 
 
     #    dhdl_xvgfiles = os.path.join(clonedir
     #try:
