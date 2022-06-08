@@ -57,7 +57,7 @@ class TrajectoryPacker(object):
             
         # gmx grompp to make a fake *.tpr
         tpr_file = f'{self.writedir}/xtc.tpr'
-        make_xtctpr_cmd = f'{self.gmx_path} grompp -f {self.writedir}/xtc.mdp -c {self.xtc_grofile} -p {self.xtc_topfile} -o {tpr_file}'
+        make_xtctpr_cmd = f'{self.gmx_path} grompp -f {self.writedir}/xtc.mdp -c {self.xtc_grofile} -p {self.xtc_topfile} -o {tpr_file} -maxwarn 2'
         if self.verbose:
             print(f'### Building a fake *.tpr {tpr_file}...')
         self.run_cmd(make_xtctpr_cmd)
